@@ -6,7 +6,8 @@ import Dashboard from './components/Dashboard';
 import AiGuide from './components/AiGuide';
 import InfoGraphic from './components/InfoGraphic';
 import { BADGES } from './constants';
-import { UserProgress } from './types';
+import { UserProgress, GithubProfile } from './types';
+import { fetchUserProfile, scanProfileForBadges } from './services/githubService';
 import { Github, Heart } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -18,6 +19,11 @@ const App: React.FC = () => {
     return saved ? JSON.parse(saved) : {};
   });
 
+  // Github Profile State
+  const [githubUser, setGithubUser] = useState<GithubProfile | null>(null);
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanError, setScanError] = useState<string | null>(null);
+
   useEffect(() => {
     localStorage.setItem('badgeProgress', JSON.stringify(progress));
   }, [progress]);
@@ -27,6 +33,36 @@ const App: React.FC = () => {
       ...prev,
       [id]: !prev[id]
     }));
+  };
+
+  const handleProfileScan = async (username: string) => {
+    setIsScanning(true);
+    setScanError(null);
+    try {
+      // 1. Fetch Profile
+      const profile = await fetchUserProfile(username);
+      setGithubUser(profile);
+
+      // 2. Scan for auto-detectable badges
+      const { badgesToUnlock } = await scanProfileForBadges(username);
+      
+      if (badgesToUnlock.length > 0) {
+        setProgress(prev => {
+           const newProgress = { ...prev };
+           badgesToUnlock.forEach(id => {
+             newProgress[id] = true;
+           });
+           return newProgress;
+        });
+      }
+
+    } catch (error: any) {
+      console.error(error);
+      setScanError(error.message || "Failed to scan profile");
+      setGithubUser(null);
+    } finally {
+      setIsScanning(false);
+    }
   };
 
   const earnableBadges = BADGES.filter(b => !b.isHistorical);
@@ -78,7 +114,13 @@ const App: React.FC = () => {
         
         {activeTab === 'all' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <Dashboard progress={progress} />
+            <Dashboard 
+                progress={progress} 
+                onScan={handleProfileScan}
+                isScanning={isScanning}
+                scanError={scanError}
+                githubUser={githubUser}
+            />
             <BadgeTable title="🏅 Earnable Achievements" badges={earnableBadges} />
             <BadgeTable title="📜 Historical & Retired" badges={historicalBadges} showTiers={false} />
           </div>
@@ -126,7 +168,13 @@ const App: React.FC = () => {
                  <h2 className="text-3xl font-bold text-white mb-2">Your Interactive Roadmap</h2>
                  <p className="text-github-muted">Click items to mark them as complete. Data is saved locally.</p>
              </div>
-             <Dashboard progress={progress} />
+             <Dashboard 
+                progress={progress} 
+                onScan={handleProfileScan}
+                isScanning={isScanning}
+                scanError={scanError}
+                githubUser={githubUser}
+             />
              <Roadmap progress={progress} toggleBadge={toggleBadge} />
           </div>
         )}

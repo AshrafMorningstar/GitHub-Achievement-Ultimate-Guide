@@ -36,3 +36,14 @@ export interface ChatMessage {
   text: string;
   isThinking?: boolean;
 }
+
+export interface GithubProfile {
+  login: string;
+  avatar_url: string;
+  name: string;
+  public_repos: number;
+  followers: number;
+  html_url: string;
+  bio?: string;
+  created_at: string;
+}
