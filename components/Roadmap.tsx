@@ -21,7 +21,7 @@ const Roadmap: React.FC<RoadmapProps> = ({ progress, toggleBadge }) => {
       <div 
         key={badgeId}
         onClick={() => toggleBadge(badgeId)}
-        className={`flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-all ${
+        className={`flex items-center gap-4 p-4 rounded-lg border cursor-pointer transition-all duration-300 ${
           isUnlocked 
             ? 'bg-github-green/10 border-github-green/30' 
             : 'bg-github-dark border-github-border hover:border-github-muted'
@@ -31,7 +31,7 @@ const Roadmap: React.FC<RoadmapProps> = ({ progress, toggleBadge }) => {
           {badge.icon}
         </div>
         <div className="flex-1">
-          <h4 className={`font-bold ${isUnlocked ? 'text-white' : 'text-github-muted'}`}>
+          <h4 className={`font-bold transition-colors ${isUnlocked ? 'text-github-text' : 'text-github-muted'}`}>
             {badge.name}
           </h4>
           <p className="text-sm text-github-muted">{badge.description}</p>

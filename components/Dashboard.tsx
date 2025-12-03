@@ -33,8 +33,8 @@ const Dashboard: React.FC<DashboardProps> = ({ progress, onScan, isScanning, sca
 
   // Data for Pie Chart (Completion)
   const pieData = [
-    { name: 'Earned', value: earnedCount, color: '#238636' },
-    { name: 'Locked', value: totalBadges - earnedCount, color: '#30363d' }
+    { name: 'Earned', value: earnedCount },
+    { name: 'Locked', value: totalBadges - earnedCount }
   ];
 
   const handleScan = (e: React.FormEvent) => {
@@ -138,15 +138,15 @@ const Dashboard: React.FC<DashboardProps> = ({ progress, onScan, isScanning, sca
               <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={categoryData} layout="vertical" margin={{ left: 40, right: 20 }}>
                       <XAxis type="number" hide />
-                      <YAxis dataKey="name" type="category" width={80} tick={{fill: 'var(--color-github-muted)', fontSize: 12}} />
+                      <YAxis dataKey="name" type="category" width={80} tick={{fill: 'rgb(var(--color-github-muted))', fontSize: 12}} />
                       <Tooltip 
-                          contentStyle={{ backgroundColor: 'var(--color-github-darker)', borderColor: 'var(--color-github-border)', color: 'var(--color-github-text)' }} 
+                          contentStyle={{ backgroundColor: 'rgb(var(--color-github-darker))', borderColor: 'rgb(var(--color-github-border))', color: 'rgb(var(--color-github-text))' }} 
                           cursor={{fill: 'transparent'}}
                       />
-                      <Bar dataKey="total" stackId="a" fill="var(--color-github-inset)" radius={[0, 4, 4, 0]} barSize={20} />
-                      <Bar dataKey="earned" stackId="a" fill="var(--color-github-blue)" radius={[0, 0, 0, 0]} barSize={20}>
+                      <Bar dataKey="total" stackId="a" fill="rgb(var(--color-github-inset))" radius={[0, 4, 4, 0]} barSize={20} />
+                      <Bar dataKey="earned" stackId="a" fill="rgb(var(--color-github-blue))" radius={[0, 0, 0, 0]} barSize={20}>
                           {categoryData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.earned === entry.total ? 'var(--color-github-green)' : 'var(--color-github-blue)'} />
+                              <Cell key={`cell-${index}`} fill={entry.earned === entry.total ? 'rgb(var(--color-github-green))' : 'rgb(var(--color-github-blue))'} />
                           ))}
                       </Bar>
                   </BarChart>
@@ -167,10 +167,10 @@ const Dashboard: React.FC<DashboardProps> = ({ progress, onScan, isScanning, sca
                           stroke="none"
                       >
                           {pieData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.name === 'Earned' ? 'var(--color-github-green)' : 'var(--color-github-border)'} />
+                              <Cell key={`cell-${index}`} fill={entry.name === 'Earned' ? 'rgb(var(--color-github-green))' : 'rgb(var(--color-github-border))'} />
                           ))}
                       </Pie>
-                      <Tooltip contentStyle={{ backgroundColor: 'var(--color-github-darker)', borderColor: 'var(--color-github-border)', color: 'var(--color-github-text)' }} />
+                      <Tooltip contentStyle={{ backgroundColor: 'rgb(var(--color-github-darker))', borderColor: 'rgb(var(--color-github-border))', color: 'rgb(var(--color-github-text))' }} />
                   </PieChart>
               </ResponsiveContainer>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pt-6 pointer-events-none">

@@ -29,11 +29,12 @@ const Hero: React.FC = () => {
         <div className="flex justify-center items-center gap-6 flex-wrap mb-12">
           {showcaseBadges.map((badge) => (
             <div key={badge.id} className="group relative">
-               <div className="w-16 h-16 md:w-20 md:h-20 bg-github-darker rounded-2xl flex items-center justify-center text-4xl border border-github-border group-hover:border-github-blue group-hover:-translate-y-2 transition-all duration-300 cursor-help shadow-xl group-hover:shadow-github-blue/20">
+               <div className="w-16 h-16 md:w-20 md:h-20 bg-github-darker rounded-2xl flex items-center justify-center text-4xl border border-github-border group-hover:border-github-blue group-hover:-translate-y-2 group-hover:shadow-lg group-hover:shadow-github-blue/20 transition-all duration-300 cursor-help relative overflow-hidden">
+                 <div className="absolute inset-0 bg-gradient-to-br from-github-blue/0 to-github-blue/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                  {badge.icon}
                </div>
                {/* Tooltip */}
-               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-max bg-github-darker border border-github-border px-3 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 shadow-lg text-github-text font-medium">
+               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-max bg-github-darker border border-github-border px-3 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 shadow-lg text-github-text font-medium animate-in fade-in slide-in-from-top-1">
                  {badge.name}
                </div>
             </div>
