@@ -47,14 +47,14 @@ const Dashboard: React.FC<DashboardProps> = ({ progress, onScan, isScanning, sca
   return (
     <div className="space-y-8 mb-12">
       {/* GitHub Sync Section */}
-      <div className="bg-gradient-to-r from-github-darker to-[#161b22] border border-github-border rounded-xl p-6 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-github-darker to-github-inset border border-github-border rounded-xl p-6 relative overflow-hidden transition-colors duration-300">
         <div className="absolute top-0 right-0 p-4 opacity-5">
-            <Github className="w-64 h-64 text-white" />
+            <Github className="w-64 h-64 text-github-text" />
         </div>
         
         <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center">
           <div className="flex-1">
-             <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+             <h2 className="text-2xl font-bold text-github-text mb-2 flex items-center gap-2">
                 <Github className="w-6 h-6" />
                 Sync Profile
              </h2>
@@ -74,7 +74,7 @@ const Dashboard: React.FC<DashboardProps> = ({ progress, onScan, isScanning, sca
                         value={usernameInput}
                         onChange={(e) => setUsernameInput(e.target.value)}
                         placeholder="github-username"
-                        className="w-full bg-github-dark border border-github-border rounded-lg pl-8 pr-4 py-2.5 text-white focus:ring-2 focus:ring-github-blue focus:border-transparent outline-none transition-all"
+                        className="w-full bg-github-dark border border-github-border rounded-lg pl-8 pr-4 py-2.5 text-github-text focus:ring-2 focus:ring-github-blue focus:border-transparent outline-none transition-all"
                     />
                 </div>
                 <button 
@@ -99,13 +99,13 @@ const Dashboard: React.FC<DashboardProps> = ({ progress, onScan, isScanning, sca
                 <div className="bg-github-dark border border-github-border rounded-lg p-4 flex items-center gap-4 shadow-lg animate-in slide-in-from-right fade-in">
                     <img src={githubUser.avatar_url} alt={githubUser.login} className="w-16 h-16 rounded-full border-2 border-github-border" />
                     <div>
-                        <h3 className="font-bold text-white">{githubUser.name || githubUser.login}</h3>
+                        <h3 className="font-bold text-github-text">{githubUser.name || githubUser.login}</h3>
                         <a href={githubUser.html_url} target="_blank" rel="noreferrer" className="text-sm text-github-muted hover:text-github-blue hover:underline">
                             @{githubUser.login}
                         </a>
                         <div className="flex gap-3 mt-2 text-xs text-github-muted">
-                            <div><strong className="text-white">{githubUser.public_repos}</strong> Repos</div>
-                            <div><strong className="text-white">{githubUser.followers}</strong> Followers</div>
+                            <div><strong className="text-github-text">{githubUser.public_repos}</strong> Repos</div>
+                            <div><strong className="text-github-text">{githubUser.followers}</strong> Followers</div>
                         </div>
                         <div className="mt-2 inline-flex items-center gap-1 text-[10px] text-github-green bg-github-green/10 px-2 py-0.5 rounded-full">
                             <UserCheck className="w-3 h-3" />
@@ -119,10 +119,10 @@ const Dashboard: React.FC<DashboardProps> = ({ progress, onScan, isScanning, sca
       </div>
 
       {/* Analytics Section */}
-      <div className="bg-github-darker border border-github-border rounded-xl p-6">
+      <div className="bg-github-darker border border-github-border rounded-xl p-6 transition-colors duration-300">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
           <div>
-              <h2 className="text-2xl font-bold text-white mb-1">📊 Collection Tracker</h2>
+              <h2 className="text-2xl font-bold text-github-text mb-1">📊 Collection Tracker</h2>
               <p className="text-github-muted text-sm">Real-time analysis of your badge portfolio</p>
           </div>
           <div className="text-right mt-4 md:mt-0">
@@ -138,15 +138,15 @@ const Dashboard: React.FC<DashboardProps> = ({ progress, onScan, isScanning, sca
               <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={categoryData} layout="vertical" margin={{ left: 40, right: 20 }}>
                       <XAxis type="number" hide />
-                      <YAxis dataKey="name" type="category" width={80} tick={{fill: '#8b949e', fontSize: 12}} />
+                      <YAxis dataKey="name" type="category" width={80} tick={{fill: 'var(--color-github-muted)', fontSize: 12}} />
                       <Tooltip 
-                          contentStyle={{ backgroundColor: '#161b22', borderColor: '#30363d', color: '#c9d1d9' }} 
+                          contentStyle={{ backgroundColor: 'var(--color-github-darker)', borderColor: 'var(--color-github-border)', color: 'var(--color-github-text)' }} 
                           cursor={{fill: 'transparent'}}
                       />
-                      <Bar dataKey="total" stackId="a" fill="#161b22" radius={[0, 4, 4, 0]} barSize={20} />
-                      <Bar dataKey="earned" stackId="a" fill="#58a6ff" radius={[0, 0, 0, 0]} barSize={20}>
+                      <Bar dataKey="total" stackId="a" fill="var(--color-github-inset)" radius={[0, 4, 4, 0]} barSize={20} />
+                      <Bar dataKey="earned" stackId="a" fill="var(--color-github-blue)" radius={[0, 0, 0, 0]} barSize={20}>
                           {categoryData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.earned === entry.total ? '#238636' : '#58a6ff'} />
+                              <Cell key={`cell-${index}`} fill={entry.earned === entry.total ? 'var(--color-github-green)' : 'var(--color-github-blue)'} />
                           ))}
                       </Bar>
                   </BarChart>
@@ -167,14 +167,14 @@ const Dashboard: React.FC<DashboardProps> = ({ progress, onScan, isScanning, sca
                           stroke="none"
                       >
                           {pieData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
+                              <Cell key={`cell-${index}`} fill={entry.name === 'Earned' ? 'var(--color-github-green)' : 'var(--color-github-border)'} />
                           ))}
                       </Pie>
-                      <Tooltip contentStyle={{ backgroundColor: '#161b22', borderColor: '#30363d', color: '#c9d1d9' }} />
+                      <Tooltip contentStyle={{ backgroundColor: 'var(--color-github-darker)', borderColor: 'var(--color-github-border)', color: 'var(--color-github-text)' }} />
                   </PieChart>
               </ResponsiveContainer>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pt-6 pointer-events-none">
-                  <span className="text-xl font-bold text-white">{earnedCount}</span>
+                  <span className="text-xl font-bold text-github-text">{earnedCount}</span>
                   <span className="text-github-muted">/{totalBadges}</span>
               </div>
           </div>

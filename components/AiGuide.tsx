@@ -28,9 +28,6 @@ const AiGuide: React.FC = () => {
     setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setIsLoading(true);
 
-    // Context is usually handled by keeping track of history, 
-    // we'll pass the last few messages for brevity or full history depending on design.
-    // For this demo, let's pass full history.
     const response = await sendMessageToGemini(userMsg, messages);
     
     setMessages(prev => [...prev, { role: 'model', text: response }]);
@@ -57,7 +54,7 @@ const AiGuide: React.FC = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 w-[90vw] md:w-[400px] h-[600px] bg-github-darker border border-github-border rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in">
+        <div className="fixed bottom-6 right-6 w-[90vw] md:w-[400px] h-[600px] bg-github-darker border border-github-border rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 fade-in transition-colors duration-300">
           {/* Header */}
           <div className="p-4 border-b border-github-border bg-github-dark flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -65,27 +62,27 @@ const AiGuide: React.FC = () => {
                  <Bot className="w-5 h-5 text-github-blue" />
               </div>
               <div>
-                <h3 className="font-bold text-white text-sm">Badge Intelligence</h3>
+                <h3 className="font-bold text-github-text text-sm">Badge Intelligence</h3>
                 <p className="text-xs text-github-muted flex items-center gap-1">
                    <span className="w-1.5 h-1.5 rounded-full bg-github-green"></span>
                    Powered by Gemini 3.0 Pro
                 </p>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="text-github-muted hover:text-white">
+            <button onClick={() => setIsOpen(false)} className="text-github-muted hover:text-github-text">
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#010409]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-github-inset transition-colors duration-300">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div 
                   className={`max-w-[85%] rounded-lg p-3 text-sm leading-relaxed ${
                     msg.role === 'user' 
                       ? 'bg-github-blue text-white' 
-                      : 'bg-github-border/30 text-github-text border border-github-border'
+                      : 'bg-github-dark border border-github-border text-github-text'
                   }`}
                 >
                   {/* Basic markdown rendering for lists/bold */}
@@ -116,13 +113,13 @@ const AiGuide: React.FC = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyPress}
                 placeholder="How do I get the Quickdraw badge?"
-                className="flex-1 bg-transparent outline-none text-sm text-white placeholder-github-muted"
+                className="flex-1 bg-transparent outline-none text-sm text-github-text placeholder-github-muted"
                 disabled={isLoading}
               />
               <button 
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="text-github-blue hover:text-white disabled:opacity-50"
+                className="text-github-blue hover:text-github-text disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
               </button>

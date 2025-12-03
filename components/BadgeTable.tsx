@@ -12,14 +12,14 @@ const BadgeTable: React.FC<BadgeTableProps> = ({ title, badges, showTiers = true
     <div className="mb-16">
       <div className="flex items-center gap-3 mb-6">
         <div className="h-8 w-1.5 bg-gradient-to-b from-github-blue to-github-purple rounded-full"></div>
-        <h3 className="text-2xl font-bold text-white tracking-tight">
+        <h3 className="text-2xl font-bold text-github-text tracking-tight">
           {title}
         </h3>
       </div>
       
-      <div className="overflow-hidden rounded-xl border border-github-border bg-[#0d1117] shadow-xl">
+      <div className="overflow-hidden rounded-xl border border-github-border bg-github-dark shadow-xl transition-colors duration-300">
         <table className="w-full text-left">
-          <thead className="bg-[#161b22] border-b border-github-border">
+          <thead className="bg-github-darker border-b border-github-border">
             <tr>
               <th className="p-6 w-20 text-center text-xs font-bold text-github-muted uppercase tracking-widest">Icon</th>
               <th className="p-6 w-1/3 text-xs font-bold text-github-muted uppercase tracking-widest">Detail</th>
@@ -29,7 +29,7 @@ const BadgeTable: React.FC<BadgeTableProps> = ({ title, badges, showTiers = true
           </thead>
           <tbody className="divide-y divide-github-border/40">
             {badges.map((badge) => (
-              <tr key={badge.id} className={`group transition-all duration-300 hover:bg-[#161b22] ${badge.isHistorical ? 'opacity-60 grayscale hover:grayscale-0 hover:opacity-100' : ''}`}>
+              <tr key={badge.id} className={`group transition-all duration-300 hover:bg-github-darker ${badge.isHistorical ? 'opacity-60 grayscale hover:grayscale-0 hover:opacity-100' : ''}`}>
                 <td className="p-6 text-center align-top">
                   <div className="w-12 h-12 flex items-center justify-center text-3xl bg-github-dark border border-github-border/50 rounded-lg group-hover:scale-110 group-hover:border-github-blue/50 group-hover:shadow-lg group-hover:shadow-github-blue/10 transition-all duration-300">
                     {badge.icon}
@@ -37,7 +37,7 @@ const BadgeTable: React.FC<BadgeTableProps> = ({ title, badges, showTiers = true
                 </td>
                 <td className="p-6 align-top">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="font-bold text-white text-lg group-hover:text-github-blue transition-colors">
+                    <span className="font-bold text-github-text text-lg group-hover:text-github-blue transition-colors">
                       {badge.name}
                     </span>
                     {badge.rarity && (

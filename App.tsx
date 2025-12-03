@@ -8,11 +8,37 @@ import InfoGraphic from './components/InfoGraphic';
 import { BADGES } from './constants';
 import { UserProgress, GithubProfile } from './types';
 import { fetchUserProfile, scanProfileForBadges } from './services/githubService';
-import { Github, Heart } from 'lucide-react';
+import { Github, Heart, Sun, Moon } from 'lucide-react';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'guide' | 'roadmap'>('all');
   
+  // Theme Management
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') {
+        // Check localStorage first, then system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            return 'dark';
+        }
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+        root.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        root.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
+
   // Load progress from localStorage or default
   const [progress, setProgress] = useState<UserProgress>(() => {
     const saved = localStorage.getItem('badgeProgress');
@@ -69,44 +95,54 @@ const App: React.FC = () => {
   const historicalBadges = BADGES.filter(b => b.isHistorical);
 
   return (
-    <div className="min-h-screen font-sans bg-github-dark text-github-text selection:bg-github-blue/30">
+    <div className="min-h-screen font-sans bg-github-dark text-github-text selection:bg-github-blue/30 transition-colors duration-300">
       <Hero />
 
       {/* Navigation */}
-      <div className="sticky top-0 z-30 bg-github-dark/95 backdrop-blur border-b border-github-border shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 overflow-x-auto">
-          <nav className="flex items-center gap-8 h-16 whitespace-nowrap">
-            <button 
-              onClick={() => setActiveTab('all')}
-              className={`h-full border-b-2 px-1 font-medium text-sm transition-colors ${
-                activeTab === 'all' 
-                ? 'border-github-red text-white' 
-                : 'border-transparent text-github-muted hover:text-github-text'
-              }`}
-            >
-              📊 All Badges
-            </button>
-            <button 
-              onClick={() => setActiveTab('guide')}
-              className={`h-full border-b-2 px-1 font-medium text-sm transition-colors ${
-                activeTab === 'guide' 
-                ? 'border-github-blue text-white' 
-                : 'border-transparent text-github-muted hover:text-github-text'
-              }`}
-            >
-              🎯 Understanding
-            </button>
-            <button 
-              onClick={() => setActiveTab('roadmap')}
-              className={`h-full border-b-2 px-1 font-medium text-sm transition-colors ${
-                activeTab === 'roadmap' 
-                ? 'border-github-green text-white' 
-                : 'border-transparent text-github-muted hover:text-github-text'
-              }`}
-            >
-              🗺️ Roadmap & Tracker
-            </button>
-          </nav>
+      <div className="sticky top-0 z-30 bg-github-dark/95 backdrop-blur border-b border-github-border shadow-sm transition-colors duration-300">
+        <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
+          <div className="overflow-x-auto flex-1 no-scrollbar">
+            <nav className="flex items-center gap-8 h-16 whitespace-nowrap">
+              <button 
+                onClick={() => setActiveTab('all')}
+                className={`h-full border-b-2 px-1 font-medium text-sm transition-colors ${
+                  activeTab === 'all' 
+                  ? 'border-github-red text-github-text' 
+                  : 'border-transparent text-github-muted hover:text-github-text'
+                }`}
+              >
+                📊 All Badges
+              </button>
+              <button 
+                onClick={() => setActiveTab('guide')}
+                className={`h-full border-b-2 px-1 font-medium text-sm transition-colors ${
+                  activeTab === 'guide' 
+                  ? 'border-github-blue text-github-text' 
+                  : 'border-transparent text-github-muted hover:text-github-text'
+                }`}
+              >
+                🎯 Understanding
+              </button>
+              <button 
+                onClick={() => setActiveTab('roadmap')}
+                className={`h-full border-b-2 px-1 font-medium text-sm transition-colors ${
+                  activeTab === 'roadmap' 
+                  ? 'border-github-green text-github-text' 
+                  : 'border-transparent text-github-muted hover:text-github-text'
+                }`}
+              >
+                🗺️ Roadmap & Tracker
+              </button>
+            </nav>
+          </div>
+
+          <button 
+            onClick={toggleTheme} 
+            className="ml-4 p-2 rounded-full hover:bg-github-border/30 text-github-text transition-colors border border-transparent hover:border-github-border"
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
         </div>
       </div>
 
@@ -131,12 +167,12 @@ const App: React.FC = () => {
             <InfoGraphic />
             
             <div className="max-w-3xl mx-auto">
-               <h3 className="text-2xl font-bold text-white mb-6">⚡ Earning: Quickdraw Badge</h3>
-               <div className="bg-github-darker border border-github-border rounded-xl overflow-hidden">
-                  <div className="p-6 border-b border-github-border bg-[#161b22]">
+               <h3 className="text-2xl font-bold text-github-text mb-6">⚡ Earning: Quickdraw Badge</h3>
+               <div className="bg-github-darker border border-github-border rounded-xl overflow-hidden transition-colors duration-300">
+                  <div className="p-6 border-b border-github-border bg-github-inset">
                     <div className="flex justify-between items-start mb-4">
                         <div>
-                            <h4 className="font-bold text-lg text-white">Goal: Close issue/PR within 5 minutes</h4>
+                            <h4 className="font-bold text-lg text-github-text">Goal: Close issue/PR within 5 minutes</h4>
                             <p className="text-github-muted text-sm">Difficulty: ⭐☆☆☆☆</p>
                         </div>
                         <div className="bg-github-blue/10 text-github-blue px-3 py-1 rounded-full text-xs font-bold">
@@ -147,10 +183,10 @@ const App: React.FC = () => {
                   <div className="p-6">
                     <h5 className="font-bold text-github-text mb-4">🛠️ Step-by-Step:</h5>
                     <ol className="space-y-4 list-decimal list-inside text-github-text">
-                        <li className="pl-2"><strong className="text-white">Find a simple issue</strong> in a friendly repository (or create one in your own test repo).</li>
-                        <li className="pl-2"><strong className="text-white">Prepare your fix</strong> locally before even commenting or opening the PR.</li>
-                        <li className="pl-2"><strong className="text-white">Submit & immediately close</strong>. The timer starts when the issue/PR is created.</li>
-                        <li className="pl-2">🎉 <strong className="text-white">Badge unlocked!</strong> Check your profile in ~24 hours.</li>
+                        <li className="pl-2"><strong className="text-github-text">Find a simple issue</strong> in a friendly repository (or create one in your own test repo).</li>
+                        <li className="pl-2"><strong className="text-github-text">Prepare your fix</strong> locally before even commenting or opening the PR.</li>
+                        <li className="pl-2"><strong className="text-github-text">Submit & immediately close</strong>. The timer starts when the issue/PR is created.</li>
+                        <li className="pl-2">🎉 <strong className="text-github-text">Badge unlocked!</strong> Check your profile in ~24 hours.</li>
                     </ol>
                     <div className="mt-6 p-4 bg-github-blue/10 border border-github-blue/20 rounded text-sm text-github-blue flex gap-2">
                         <span>💡</span>
@@ -165,7 +201,7 @@ const App: React.FC = () => {
         {activeTab === 'roadmap' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
              <div className="mb-10 text-center">
-                 <h2 className="text-3xl font-bold text-white mb-2">Your Interactive Roadmap</h2>
+                 <h2 className="text-3xl font-bold text-github-text mb-2">Your Interactive Roadmap</h2>
                  <p className="text-github-muted">Click items to mark them as complete. Data is saved locally.</p>
              </div>
              <Dashboard 
@@ -181,7 +217,7 @@ const App: React.FC = () => {
 
       </main>
 
-      <footer className="border-t border-github-border bg-github-darker py-12 mt-12">
+      <footer className="border-t border-github-border bg-github-darker py-12 mt-12 transition-colors duration-300">
         <div className="max-w-4xl mx-auto text-center px-6">
            <div className="flex items-center justify-center gap-2 mb-6">
               <Github className="w-6 h-6 text-github-muted" />

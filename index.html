@@ -6,22 +6,32 @@
     <title>GitHub Achievement Ultimate Guide: The Master Architect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+      // Initialize theme before parsing to prevent flash
+      try {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+      } catch (_) {}
+
       tailwind.config = {
         darkMode: 'class',
         theme: {
           extend: {
             colors: {
               github: {
-                dark: '#0d1117',
-                darker: '#010409',
-                border: '#30363d',
-                text: '#c9d1d9',
-                muted: '#8b949e',
-                blue: '#58a6ff',
-                green: '#238636',
-                purple: '#8957e5',
-                red: '#da3633',
-                gold: '#e3b341',
+                dark: 'var(--color-github-dark)',     // Main background
+                darker: 'var(--color-github-darker)', // Card/Secondary background
+                inset: 'var(--color-github-inset)',   // Deep background (terminals, inputs)
+                border: 'var(--color-github-border)',
+                text: 'var(--color-github-text)',
+                muted: 'var(--color-github-muted)',
+                blue: 'var(--color-github-blue)',
+                green: 'var(--color-github-green)',
+                purple: 'var(--color-github-purple)',
+                red: 'var(--color-github-red)',
+                gold: 'var(--color-github-gold)',
               }
             }
           }
@@ -29,23 +39,55 @@
       }
     </script>
     <style>
-      body {
-        background-color: #0d1117;
-        color: #c9d1d9;
+      :root {
+        /* Light Mode Variables */
+        --color-github-dark: #ffffff;
+        --color-github-darker: #f6f8fa;
+        --color-github-inset: #eff1f3;
+        --color-github-border: #d0d7de;
+        --color-github-text: #24292f;
+        --color-github-muted: #57606a;
+        --color-github-blue: #0969da;
+        --color-github-green: #1a7f37;
+        --color-github-purple: #8250df;
+        --color-github-red: #cf222e;
+        --color-github-gold: #9a6700;
       }
+      
+      .dark {
+        /* Dark Mode Variables */
+        --color-github-dark: #0d1117;
+        --color-github-darker: #161b22;
+        --color-github-inset: #010409;
+        --color-github-border: #30363d;
+        --color-github-text: #c9d1d9;
+        --color-github-muted: #8b949e;
+        --color-github-blue: #58a6ff;
+        --color-github-green: #238636;
+        --color-github-purple: #8957e5;
+        --color-github-red: #da3633;
+        --color-github-gold: #e3b341;
+      }
+
+      body {
+        background-color: var(--color-github-dark);
+        color: var(--color-github-text);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      
       /* Custom scrollbar for webkit */
       ::-webkit-scrollbar {
         width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #0d1117;
+        background: var(--color-github-dark);
       }
       ::-webkit-scrollbar-thumb {
-        background: #30363d;
+        background: var(--color-github-border);
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #8b949e;
+        background: var(--color-github-muted);
       }
     </style>
   <script type="importmap">
