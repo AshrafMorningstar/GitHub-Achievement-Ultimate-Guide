@@ -33,6 +33,22 @@
                 red: 'rgb(var(--color-github-red) / <alpha-value>)',
                 gold: 'rgb(var(--color-github-gold) / <alpha-value>)',
               }
+            },
+            animation: {
+              'blob': 'blob 7s infinite',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
             }
           }
         }
@@ -42,52 +58,83 @@
       :root {
         /* Light Mode RGB Triplets */
         --color-github-dark: 255 255 255;       /* #ffffff */
-        --color-github-darker: 246 248 250;     /* #f6f8fa */
-        --color-github-inset: 239 241 243;      /* #eff1f3 */
-        --color-github-border: 208 215 222;     /* #d0d7de */
-        --color-github-text: 36 41 47;          /* #24292f */
-        --color-github-muted: 87 96 106;        /* #57606a */
-        --color-github-blue: 9 105 218;         /* #0969da */
-        --color-github-green: 26 127 55;        /* #1a7f37 */
-        --color-github-purple: 130 80 223;      /* #8250df */
-        --color-github-red: 207 34 46;          /* #cf222e */
-        --color-github-gold: 154 103 0;         /* #9a6700 */
+        --color-github-darker: 248 250 252;     /* #f8fafc */
+        --color-github-inset: 241 245 249;      /* #f1f5f9 */
+        --color-github-border: 226 232 240;     /* #e2e8f0 */
+        --color-github-text: 15 23 42;          /* #0f172a */
+        --color-github-muted: 100 116 139;      /* #64748b */
+        --color-github-blue: 37 99 235;         /* #2563eb */
+        --color-github-green: 22 163 74;        /* #16a34a */
+        --color-github-purple: 147 51 234;      /* #9333ea */
+        --color-github-red: 220 38 38;          /* #dc2626 */
+        --color-github-gold: 202 138 4;         /* #ca8a04 */
       }
       
       .dark {
         /* Dark Mode RGB Triplets */
-        --color-github-dark: 13 17 23;          /* #0d1117 */
-        --color-github-darker: 22 27 34;        /* #161b22 */
-        --color-github-inset: 1 4 9;            /* #010409 */
-        --color-github-border: 48 54 61;        /* #30363d */
-        --color-github-text: 201 209 217;       /* #c9d1d9 */
-        --color-github-muted: 139 148 158;      /* #8b949e */
-        --color-github-blue: 88 166 255;        /* #58a6ff */
-        --color-github-green: 35 134 54;        /* #238636 */
-        --color-github-purple: 137 87 229;      /* #8957e5 */
-        --color-github-red: 218 54 51;          /* #da3633 */
-        --color-github-gold: 227 179 65;        /* #e3b341 */
+        --color-github-dark: 10 10 12;          /* #0a0a0c */
+        --color-github-darker: 18 18 21;        /* #121215 */
+        --color-github-inset: 5 5 6;            /* #050506 */
+        --color-github-border: 40 40 45;        /* #28282d */
+        --color-github-text: 226 232 240;       /* #e2e8f0 */
+        --color-github-muted: 148 163 184;      /* #94a3b8 */
+        --color-github-blue: 96 165 250;        /* #60a5fa */
+        --color-github-green: 74 222 128;       /* #4ade80 */
+        --color-github-purple: 192 132 252;     /* #c084fc */
+        --color-github-red: 248 113 113;        /* #f87171 */
+        --color-github-gold: 250 204 21;        /* #facc15 */
       }
 
       body {
         background-color: rgb(var(--color-github-dark));
         color: rgb(var(--color-github-text));
         transition: background-color 0.3s ease, color 0.3s ease;
+        background-image: radial-gradient(rgb(var(--color-github-border) / 0.15) 1px, transparent 1px);
+        background-size: 24px 24px;
+        min-height: 100vh;
       }
       
-      /* Custom scrollbar for webkit */
+      /* Custom scrollbar */
       ::-webkit-scrollbar {
-        width: 8px;
+        width: 10px;
       }
       ::-webkit-scrollbar-track {
-        background: rgb(var(--color-github-dark));
+        background: transparent;
       }
       ::-webkit-scrollbar-thumb {
         background: rgb(var(--color-github-border));
-        border-radius: 4px;
+        border-radius: 5px;
+        border: 2px solid rgb(var(--color-github-dark));
       }
       ::-webkit-scrollbar-thumb:hover {
         background: rgb(var(--color-github-muted));
+      }
+
+      /* Utilities */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      .glass-panel {
+        background: rgba(var(--color-github-darker), 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(var(--color-github-border), 0.5);
+      }
+      
+      .custom-scrollbar::-webkit-scrollbar {
+         width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+         background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+         background: rgba(var(--color-github-border), 0.5);
+         border-radius: 10px;
       }
     </style>
   <script type="importmap">
